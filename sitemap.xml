@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://alexandermucc.cn/categories/index.html</loc>
+    
+    <lastmod>2021-06-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://alexandermucc.cn/tags/index.html</loc>
+    
+    <lastmod>2021-06-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://alexandermucc.cn/[object%20Object]/hello-world/</loc>
     
     <lastmod>1985-10-26</lastmod>
