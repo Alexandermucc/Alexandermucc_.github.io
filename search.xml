@@ -1,46 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>技术学习方法</title>
-    <url>/archives/9a1b163b.html</url>
-    <content><![CDATA[<h2 id="学习新技术的方法"><a href="#学习新技术的方法" class="headerlink" title="学习新技术的方法"></a>学习新技术的方法</h2><p>学习新技术的几个步骤</p>
-<p>写博客时注意培养框架思想。<strong>大局思维导图、细节写博客</strong></p>
-<span id="more"></span>
-
-<h3 id="一、-认识和了解"><a href="#一、-认识和了解" class="headerlink" title="一、 认识和了解"></a>一、 认识和了解</h3><p><strong>1. 百科定义</strong>：了解该技术是什么<br><strong>2. 解决什么问题</strong>：<br><strong>3. 同类技术有哪些</strong>：<br><strong>4. 技术的组成部分</strong>：<br><strong>5. 为什么这个技术会出现</strong></p>
-<h3 id="二、-学语法学用法"><a href="#二、-学语法学用法" class="headerlink" title="二、 学语法学用法"></a>二、 学语法学用法</h3><p><strong>多思考、多提炼、多总结、写博客</strong></p>
-<p>**上手比较容易 **</p>
-<ol>
-<li>视频教程<blockquote>
-<p>阿里云、腾迅课堂、bilibili</p>
-</blockquote>
-</li>
-<li>快速上手视频<blockquote>
-<p>看官网的快速入门文档、简单搭建的视频同上面</p>
-</blockquote>
-</li>
-<li>入门博客<blockquote>
-<p>CSDN、博客园、简书等</p>
-</blockquote>
-</li>
-</ol>
-<p>**比较系统了解 **</p>
-<ol>
-<li>基础技术类：看权威的书籍、经典的书籍</li>
-<li>框架类：看官方文档</li>
-</ol>
-<h3 id="三、练习"><a href="#三、练习" class="headerlink" title="三、练习"></a>三、练习</h3><ol>
-<li>局部练习、小型实战、搭建环境</li>
-<li>遇到的坑及时记录、写博客</li>
-</ol>
-<h3 id="四、造轮子"><a href="#四、造轮子" class="headerlink" title="四、造轮子"></a>四、造轮子</h3><p>上手实际开源项目</p>
-<blockquote>
-<p>github、gitee等</p>
-</blockquote>
+    <title>hexo的优化</title>
+    <url>/archives/1253b4af.html</url>
+    <content><![CDATA[<p>的是是是</p>
+<p>文章制定操作</p>
 ]]></content>
-      <tags>
-        <tag>技术</tag>
-      </tags>
   </entry>
   <entry>
     <title>Java基础之类与对象</title>
@@ -230,6 +195,48 @@
       </tags>
   </entry>
   <entry>
+    <title>技术学习方法</title>
+    <url>/archives/9a1b163b.html</url>
+    <content><![CDATA[<h2 id="学习新技术的方法"><a href="#学习新技术的方法" class="headerlink" title="学习新技术的方法"></a>学习新技术的方法</h2><p>学习新技术的几个步骤</p>
+<p>写博客时注意培养框架思想。<strong>大局思维导图、细节写博客</strong></p>
+<span id="more"></span>
+
+<h3 id="一、-认识和了解"><a href="#一、-认识和了解" class="headerlink" title="一、 认识和了解"></a>一、 认识和了解</h3><p><strong>1. 百科定义</strong>：了解该技术是什么<br><strong>2. 解决什么问题</strong>：<br><strong>3. 同类技术有哪些</strong>：<br><strong>4. 技术的组成部分</strong>：<br><strong>5. 为什么这个技术会出现</strong></p>
+<h3 id="二、-学语法学用法"><a href="#二、-学语法学用法" class="headerlink" title="二、 学语法学用法"></a>二、 学语法学用法</h3><p><strong>多思考、多提炼、多总结、写博客</strong></p>
+<p>**上手比较容易 **</p>
+<ol>
+<li>视频教程<blockquote>
+<p>阿里云、腾迅课堂、bilibili</p>
+</blockquote>
+</li>
+<li>快速上手视频<blockquote>
+<p>看官网的快速入门文档、简单搭建的视频同上面</p>
+</blockquote>
+</li>
+<li>入门博客<blockquote>
+<p>CSDN、博客园、简书等</p>
+</blockquote>
+</li>
+</ol>
+<p>**比较系统了解 **</p>
+<ol>
+<li>基础技术类：看权威的书籍、经典的书籍</li>
+<li>框架类：看官方文档</li>
+</ol>
+<h3 id="三、练习"><a href="#三、练习" class="headerlink" title="三、练习"></a>三、练习</h3><ol>
+<li>局部练习、小型实战、搭建环境</li>
+<li>遇到的坑及时记录、写博客</li>
+</ol>
+<h3 id="四、造轮子"><a href="#四、造轮子" class="headerlink" title="四、造轮子"></a>四、造轮子</h3><p>上手实际开源项目</p>
+<blockquote>
+<p>github、gitee等</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>技术</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>觉醒年代</title>
     <url>/archives/a3c72645.html</url>
     <content><![CDATA[<h3 id="李大钊："><a href="#李大钊：" class="headerlink" title="李大钊："></a>李大钊：</h3><p>英雄淘尽大江流，歌舞依然上画楼。一代声华空醉梦，十年潦倒剩穷愁。竹帘半卷江天雨，蕉扇初迎海外秋。忆到万山无语处，只应共泛五湖舟</p>
@@ -297,7 +304,7 @@
 <p><img src="https://pic4.zhimg.com/v2-d1e47103ec1aa8675f68688c5d63bd27_r.jpg" alt="img"></p>
 <p>打开<a href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
 <p><img src="https://pic1.zhimg.com/v2-72a3f22c080e99343c3cc4aabce10e3c_r.jpg" alt="img"></p>
-<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;">&#103;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;</a> ：</p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#x67;&#105;&#116;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;">&#x67;&#105;&#116;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;</a> ：</p>
 <p><img src="https://pic3.zhimg.com/v2-da481ffa686410becd4186c656b4ebd6_r.jpg" alt="img"></p>
 <p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 <p><strong>安装Node.js</strong></p>
