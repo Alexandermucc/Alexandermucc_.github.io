@@ -81,13 +81,6 @@
   </url>
   
   <url>
-    <loc>https://alexandermucc.cn/tags/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2021-06-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://alexandermucc.cn/tags/%E5%BD%B1%E8%A7%86/</loc>
     <lastmod>2021-06-20</lastmod>
     <changefreq>daily</changefreq>
@@ -96,6 +89,13 @@
   
   <url>
     <loc>https://alexandermucc.cn/tags/%E7%86%8F%E9%99%B6/</loc>
+    <lastmod>2021-06-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://alexandermucc.cn/tags/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2021-06-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
