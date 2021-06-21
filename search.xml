@@ -46,7 +46,7 @@
 <p><img src="https://pic4.zhimg.com/v2-d1e47103ec1aa8675f68688c5d63bd27_r.jpg" alt="img"></p>
 <p>打开<a href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
 <p><img src="https://pic1.zhimg.com/v2-72a3f22c080e99343c3cc4aabce10e3c_r.jpg" alt="img"></p>
-<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#98;&#46;&#x63;&#111;&#x6d;">&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#98;&#46;&#x63;&#111;&#x6d;</a> ：</p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#x67;&#x69;&#116;&#64;&#x67;&#105;&#116;&#104;&#117;&#98;&#x2e;&#x63;&#111;&#x6d;">&#x67;&#x69;&#116;&#64;&#x67;&#105;&#116;&#104;&#117;&#98;&#x2e;&#x63;&#111;&#x6d;</a> ：</p>
 <p><img src="https://pic3.zhimg.com/v2-da481ffa686410becd4186c656b4ebd6_r.jpg" alt="img"></p>
 <p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 <p><strong>安装Node.js</strong></p>
@@ -216,29 +216,6 @@
       <tags>
         <tag>技术</tag>
       </tags>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/archives/0.html</url>
-    <content><![CDATA[<h1 id="宝宝计划"><a href="#宝宝计划" class="headerlink" title="宝宝计划"></a>宝宝计划</h1><h1 id="生活篇"><a href="#生活篇" class="headerlink" title="生活篇"></a>生活篇</h1><h1 id="衣"><a href="#衣" class="headerlink" title="衣"></a>衣</h1><ol>
-<li>互换衣服出门</li>
-<li></li>
-</ol>
-<h1 id="食"><a href="#食" class="headerlink" title="食"></a>食</h1><ol>
-<li>一起做蛋糕🎂</li>
-<li>一起做小龙虾</li>
-</ol>
-<h1 id="住"><a href="#住" class="headerlink" title="住"></a>住</h1><ol>
-<li>武汉买一套房子、100平、近地铁、公交便利</li>
-</ol>
-<h1 id="行"><a href="#行" class="headerlink" title="行"></a>行</h1><ol>
-<li><del>去长沙、岳麓山、湖南大学、橘子洲头、五一广州</del></li>
-<li>去武功山登山、野营、一起看日出</li>
-<li>一起去厦门看海、看你、看星辰</li>
-<li>一起去北京，爬长城、看故宫</li>
-<li>广州</li>
-</ol>
-<h1 id="技能篇"><a href="#技能篇" class="headerlink" title="技能篇"></a>技能篇</h1><h2 id="宝宝篇"><a href="#宝宝篇" class="headerlink" title="宝宝篇"></a>宝宝篇</h2><h2 id="大宝宝篇"><a href="#大宝宝篇" class="headerlink" title="大宝宝篇"></a>大宝宝篇</h2>]]></content>
   </entry>
   <entry>
     <title>hexo的优化</title>
