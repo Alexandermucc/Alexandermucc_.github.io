@@ -217,7 +217,10 @@
   <entry>
     <title>vue错误</title>
     <url>/archives/450ca8b4.html</url>
-    <content><![CDATA[<h2 id="vue错误"><a href="#vue错误" class="headerlink" title="vue错误"></a>vue错误</h2><h3 id="1-typeError-Cannot-read-property-‘-createElement’-of-undefined"><a href="#1-typeError-Cannot-read-property-‘-createElement’-of-undefined" class="headerlink" title="1 typeError: Cannot read property ‘$createElement’ of undefined"></a>1 typeError: Cannot read property ‘$createElement’ of undefined</h3><p><img src="https://gitee.com/alexandermucc/img/raw/master/img/1624434632191/image-20210623155031102.png" alt="image-20210623155031102"></p>
+    <content><![CDATA[<h2 id="vue错误"><a href="#vue错误" class="headerlink" title="vue错误"></a>vue错误</h2><p>本文旨在学习vue框架时，所遇到的坑。</p>
+<span id="more"></span>
+
+<h3 id="1-typeError-Cannot-read-property-‘-createElement’-of-undefined"><a href="#1-typeError-Cannot-read-property-‘-createElement’-of-undefined" class="headerlink" title="1 typeError: Cannot read property ‘$createElement’ of undefined"></a>1 typeError: Cannot read property ‘$createElement’ of undefined</h3><p><img src="https://gitee.com/alexandermucc/img/raw/master/img/1624434632191/image-20210623155031102.png" alt="image-20210623155031102"></p>
 <p><strong>解决：</strong></p>
 <p><img src="https://gitee.com/alexandermucc/img/raw/master/img/1624434744179/image-20210623155222932.png" alt="image-20210623155222932"></p>
 <h3 id="2-vue-init-webpack-hello-vue-卡在download-template中"><a href="#2-vue-init-webpack-hello-vue-卡在download-template中" class="headerlink" title="2 vue init webpack hello-vue 卡在download template中"></a>2 vue init webpack hello-vue 卡在download template中</h3><p><strong>1. 可能是hosts镜像的问题</strong></p>

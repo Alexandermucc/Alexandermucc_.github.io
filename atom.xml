@@ -6,7 +6,7 @@
   <link href="https://alexandermucc.cn/atom.xml" rel="self"/>
   
   <link href="https://alexandermucc.cn/"/>
-  <updated>2021-06-24T07:57:22.803Z</updated>
+  <updated>2021-06-24T07:59:20.013Z</updated>
   <id>https://alexandermucc.cn/</id>
   
   <author>
@@ -21,16 +21,10 @@
     <link href="https://alexandermucc.cn/archives/450ca8b4.html"/>
     <id>https://alexandermucc.cn/archives/450ca8b4.html</id>
     <published>2021-06-24T07:55:15.000Z</published>
-    <updated>2021-06-24T07:57:22.803Z</updated>
+    <updated>2021-06-24T07:59:20.013Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;vue错误&quot;&gt;&lt;a href=&quot;#vue错误&quot; class=&quot;headerlink&quot; title=&quot;vue错误&quot;&gt;&lt;/a&gt;vue错误&lt;/h2&gt;&lt;h3</summary>
-        
-      
+    <summary type="html">&lt;h2 id=&quot;vue错误&quot;&gt;&lt;a href=&quot;#vue错误&quot; class=&quot;headerlink&quot; title=&quot;vue错误&quot;&gt;&lt;/a&gt;vue错误&lt;/h2&gt;&lt;p&gt;本文旨在学习vue框架时，所遇到的坑。&lt;/p&gt;</summary>
     
     
     
@@ -48,7 +42,7 @@
     <link href="https://alexandermucc.cn/archives/317b894e.html"/>
     <id>https://alexandermucc.cn/archives/317b894e.html</id>
     <published>2021-06-24T06:53:57.000Z</published>
-    <updated>2021-06-24T07:56:56.325Z</updated>
+    <updated>2021-06-24T07:57:34.286Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Vue&quot;&gt;&lt;a href=&quot;#Vue&quot; class=&quot;headerlink&quot; title=&quot;Vue&quot;&gt;&lt;/a&gt;Vue&lt;/h1&gt;&lt;p&gt;Vue是一个前端框架，方便后端开发者理解。如果想快速搭建，可参考第十二章的运行。如果出错可查看本博客的Vue错误中的文档。&lt;/p&gt;</summary>
