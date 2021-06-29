@@ -215,6 +215,537 @@
 ]]></content>
   </entry>
   <entry>
+    <title></title>
+    <url>/archives/0.html</url>
+    <content><![CDATA[<h1 id="Java容器"><a href="#Java容器" class="headerlink" title="Java容器"></a>Java容器</h1><p>主要介绍Java中的数据结构<code>Collection接口</code>中的两个子类<code>List、Set</code>以及<code>Map</code></p>
+<span id="more"></span>
+
+
+
+<ul>
+<li><code>List</code>(对付顺序的好帮手)： 存储的元素是<strong>有序的</strong>、<strong>可重复的。</strong><ul>
+<li><code>Arraylist</code>： <code>Object[]</code>数组</li>
+<li><code>Vector</code>：<code>Object[]</code>数组</li>
+<li><code>LinkedList</code>： 双向链表(JDK1.6 之前为循环链表，JDK1.7 取消了循环)</li>
+</ul>
+</li>
+<li><code>Set</code>(注重独一无二的性质): 存储的元素是<strong>无序的</strong>、<strong>不可重复的。</strong><ul>
+<li><code>HashSet</code>（无序，唯一）: 基于 <code>HashMap</code> 实现的，底层采用 <code>HashMap</code> 来保存元素</li>
+<li><code>LinkedHashSet</code>：<code>LinkedHashSet</code> 是 <code>HashSet</code> 的子类，并且其内部是通过 <code>LinkedHashMap</code> 来实现的。有点类似于我们之前说的 <code>LinkedHashMap</code> 其内部是基于 <code>HashMap</code> 实现一样，不过还是有一点点区别的</li>
+<li><code>TreeSet</code>（有序，唯一）： 红黑树(自平衡的排序二叉树)</li>
+</ul>
+</li>
+<li><code>Map</code>(用 Key 来搜索的专家): 使用键值对（key-value）存储，类似于数学上的函数 y=f(x)，“x”代表 key，”y”代表 value，**<code>Key</code> 是无序的、不可重复的<strong>，</strong><code>value</code> 是无序的、可重复的**，每个键最多映射到一个值。<ul>
+<li><code>HashMap</code>： JDK1.8 之前 <code>HashMap</code> 由数组+链表组成的，数组是 <code>HashMap</code> 的主体，链表则是主要为了解决哈希冲突而存在的（“拉链法”解决冲突）。JDK1.8 以后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）（将链表转换成红黑树前会判断，如果当前数组的长度小于 64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转化为红黑树，以减少搜索时间</li>
+<li><code>LinkedHashMap</code>： <code>LinkedHashMap</code> 继承自 <code>HashMap</code>，所以它的底层仍然是基于拉链式散列结构即由数组和链表或红黑树组成。另外，<code>LinkedHashMap</code> 在上面结构的基础上，增加了一条双向链表，使得上面的结构可以保持键值对的插入顺序。同时通过对链表进行相应的操作，实现了访问顺序相关逻辑。详细可以查看：<a href="https://www.imooc.com/article/22931">《LinkedHashMap 源码详细分析（JDK1.8）》</a></li>
+<li><code>Hashtable</code>： 数组+链表组成的，数组是 <code>Hashtable</code> 的主体，链表则是主要为了解决哈希冲突而存在的</li>
+<li><code>TreeMap</code>： 红黑树（自平衡的排序二叉树）</li>
+</ul>
+</li>
+</ul>
+<h2 id="List接口"><a href="#List接口" class="headerlink" title="List接口"></a>List接口</h2><h3 id="Arraylist-和-Vector-的区别"><a href="#Arraylist-和-Vector-的区别" class="headerlink" title="Arraylist 和 Vector 的区别?"></a>Arraylist 和 Vector 的区别?</h3><ul>
+<li><code>ArrayList</code> 是 <code>List</code> 的主要实现类，底层使用 <code>Object[ ]</code>存储，适用于频繁的查找工作，<strong>线程不安全</strong> ；</li>
+<li><code>Vector</code> 是 <code>List</code> 的古老实现类，底层使用<code>Object[ ]</code> 存储，<strong>线程安全</strong>的。</li>
+</ul>
+<h3 id="Arraylist-与-LinkedList-区别"><a href="#Arraylist-与-LinkedList-区别" class="headerlink" title="Arraylist 与 LinkedList 区别?"></a>Arraylist 与 LinkedList 区别?</h3><ol>
+<li><p><strong>都不能保证线程安全：</strong> <code>ArrayList</code> 和 <code>LinkedList</code> 都是不同步的，也就是不保证线程安全；</p>
+</li>
+<li><p><strong>底层数据结构：</strong></p>
+<ul>
+<li><p> <code>Arraylist</code> 底层使用的是 <strong><code>Object</code> 数组</strong>；</p>
+</li>
+<li><p><code>LinkedList</code> 底层使用的是 <strong>双向链表</strong> </p>
+<blockquote>
+<p>数据结构（JDK1.6 之前为循环链表，JDK1.7 取消了循环。注意双向链表和双向循环链表的区别，下面有介绍到！）</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>插入和删除是否受元素位置的影响</strong>：</p>
+<ul>
+<li><code>ArrayList</code> 采用数组存储，所以<strong>插入和删除元素的时间复杂度受元素位置的影响</strong>。 </li>
+<li><code>LinkedList</code> 采用链表存储<ul>
+<li>如果是在<strong>头尾插入或者删除元素不受元素位置的影响</strong></li>
+<li>如果是要在<strong>指定位置 <code>i</code> 插入和删除元素的话时间复杂度近似为 O(n)</strong> ，因为需要先移动到指定位置再插入。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>是否支持快速随机访问</strong> </p>
+<ol>
+<li><code>LinkedList</code> 不支持高效的随机元素访问，</li>
+<li> <code>ArrayList</code> 支持。快速随机访问就是通过元素的序号快速获取元素对象(对应于<code>get(int index)</code>方法)。</li>
+</ol>
+</li>
+<li><p><strong>内存空间占用：</strong> </p>
+<ol>
+<li>ArrayList 的空间浪费主要体现在在 list <strong>列表的结尾会预留一定的容量空间</strong></li>
+<li> LinkedList 的空间花费则体现在它的<strong>每一个元素都需要消耗比 ArrayList 更多的空间</strong>（因为要存放直接后继和直接前驱以及数据）。</li>
+</ol>
+</li>
+</ol>
+<h3 id="ArrayList-的扩容机制吧"><a href="#ArrayList-的扩容机制吧" class="headerlink" title="ArrayList 的扩容机制吧"></a>ArrayList 的扩容机制吧</h3><p><code>ArrayList</code>类下</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/archives/0.html</url>
+    <content><![CDATA[<h1 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h1><blockquote>
+<p><strong>代理对象来代替对真实对象(real object)的访问</strong>，<strong>不修改原目标对象的前提下，提供额外的功能操作，扩展目标对象的功能</strong></p>
+</blockquote>
+<p><strong>主要作用：</strong>是扩展目标对象的功能，比如说在目标对象的某个方法执行前后你可以增加一些自定义的操作。</p>
+<span id="more"></span>
+
+<h1 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//实际使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SmsService smsService = <span class="keyword">new</span> SmsServiceImpl();</span><br><span class="line">        SmsProxy smsProxy = <span class="keyword">new</span> SmsProxy(smsService);</span><br><span class="line">        smsProxy.send(<span class="string">&quot;java&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义发送短信的接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SmsService</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">send</span><span class="params">(String message)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现发送短信的接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SmsServiceImpl</span> <span class="keyword">implements</span> <span class="title">SmsService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">send</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;send message:&quot;</span> + message);</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建代理类并同样实现发送短信的接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SmsProxy</span> <span class="keyword">implements</span> <span class="title">SmsService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> SmsService smsService;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SmsProxy</span><span class="params">(SmsService smsService)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.smsService = smsService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">send</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//调用方法之前，我们可以添加自己的操作</span></span><br><span class="line">        System.out.println(<span class="string">&quot;before method send()&quot;</span>);</span><br><span class="line">        smsService.send(message);</span><br><span class="line">        <span class="comment">//调用方法之后，我们同样可以添加自己的操作</span></span><br><span class="line">        System.out.println(<span class="string">&quot;after method send()&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行上述代码之后，控制台打印出</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">before method send()</span><br><span class="line">send message:java</span><br><span class="line">after method send()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>对目标对象的每个方法的增强都是手动完成的,需要对每个目标类都单独写一个代理类</p>
+<p><strong>静态代理实现步骤:</strong></p>
+<ol>
+<li>定义一个接口及其实现类；</li>
+<li>创建一个代理类同样实现这个接口</li>
+<li>将目标对象注入进代理类，然后在代理类的对应方法调用目标类中的对应方法。这样的话，我们就可以通过代理类屏蔽对目标对象的访问，并且可以在目标方法执行前后做一些自己想做的事情。</li>
+</ol>
+<h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1><blockquote>
+<p>不需要针对每个目标类都单独创建一个代理类，并且也不需要我们必须实现接口，我们可以直接代理实现类</p>
+<p><strong>动态代理是在运行时动态生成类字节码，并加载到 JVM 中的</strong></p>
+</blockquote>
+<p>动态代理的实现方式有很多种，比如 <strong>JDK 动态代理</strong>、<strong>CGLIB 动态代理</strong></p>
+<p><a href="https://snailclimb.gitee.io/javaguide/#/docs/java/basis/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3">参考文章</a></p>
+<h2 id="JDK-动态代理机制"><a href="#JDK-动态代理机制" class="headerlink" title="JDK 动态代理机制"></a>JDK 动态代理机制</h2><blockquote>
+<p><strong>在 Java 动态代理机制中 <code>InvocationHandler</code> 接口和 <code>Proxy</code> 类是核心。</strong></p>
+</blockquote>
+<h3 id="JDK-动态代理类使用步骤"><a href="#JDK-动态代理类使用步骤" class="headerlink" title="JDK 动态代理类使用步骤"></a>JDK 动态代理类使用步骤</h3><ol>
+<li><strong>定义一个接口及其实现类；</strong></li>
+<li>自定义 <code>InvocationHandler</code> 并<strong>重写<code>invoke</code>方法</strong>，在 <code>invoke</code> 方法中我们会<strong>调用原生方法</strong>（被代理类的方法）并自定义一些处理逻辑；</li>
+<li>通过 <code>Proxy.newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h)</code> 方法创建代理对象；</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//实际使用</span></span><br><span class="line">SmsService smsService = (SmsService) JdkProxyFactory.getProxy(<span class="keyword">new</span> SmsServiceImpl());</span><br><span class="line">smsService.send(<span class="string">&quot;java&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义发送短信的接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SmsService</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">send</span><span class="params">(String message)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现发送短信的接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SmsServiceImpl</span> <span class="keyword">implements</span> <span class="title">SmsService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">send</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;send message:&quot;</span> + message);</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一个 JDK 动态代理类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DebugInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代理类中的真实对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Object target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DebugInvocationHandler</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> InvocationTargetException, IllegalAccessException </span>&#123;</span><br><span class="line">        <span class="comment">//调用方法之前，我们可以添加自己的操作</span></span><br><span class="line">        System.out.println(<span class="string">&quot;before method &quot;</span> + method.getName());</span><br><span class="line">        Object result = method.invoke(target, args);</span><br><span class="line">        <span class="comment">//调用方法之后，我们同样可以添加自己的操作</span></span><br><span class="line">        System.out.println(<span class="string">&quot;after method &quot;</span> + method.getName());</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取代理对象的工厂类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdkProxyFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getProxy</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Proxy.newProxyInstance(</span><br><span class="line">                target.getClass().getClassLoader(), <span class="comment">// 目标类的类加载</span></span><br><span class="line">                target.getClass().getInterfaces(),  <span class="comment">// 代理需要实现的接口，可指定多个</span></span><br><span class="line">                <span class="keyword">new</span> DebugInvocationHandler(target)   <span class="comment">// 代理对象对应的自定义 InvocationHandler</span></span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//getProxy() ：主要通过Proxy.newProxyInstance（）方法获取某个类的代理对象</span></span><br></pre></td></tr></table></figure>
+
+<p>运行上述代码之后，控制台打印出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">before method send</span><br><span class="line">send message:java</span><br><span class="line">after method send</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="CGLIB-动态代理机制"><a href="#CGLIB-动态代理机制" class="headerlink" title="CGLIB 动态代理机制"></a>CGLIB 动态代理机制</h2><blockquote>
+<p><strong>JDK 动态代理</strong>有一个最致命的问题是其<u>只能代理实现了接口的类</u>。</p>
+<p>为了解决这个问题，我们可以用 CGLIB 动态代理机制来避免。</p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/cglib/cglib">CGLIB</a>(<em>Code Generation Library</em>)是一个基于<a href="http://www.baeldung.com/java-asm">ASM</a>的字节码生成库，它允许我们在运行时对<strong>字节码进行修改和动态生成</strong>。CGLIB 通过<strong>继承方式实现代理</strong>。很多知名的开源框架都使用到了<a href="https://github.com/cglib/cglib">CGLIB</a>， 例如 Spring 中的 AOP 模块中：如果目标对象实现了接口，则默认采用 JDK 动态代理，否则采用 CGLIB 动态代理</p>
+</blockquote>
+<p><strong>在 CGLIB 动态代理机制中 <code>MethodInterceptor</code> 接口和 <code>Enhancer</code> 类是核心。</strong></p>
+<p>你需要自定义 <code>MethodInterceptor</code> 并重写 <code>intercept</code> 方法，<code>intercept</code> 用于拦截增强被代理类的方法。</p>
+<h3 id="CGLIB-动态代理类使用步骤"><a href="#CGLIB-动态代理类使用步骤" class="headerlink" title="CGLIB 动态代理类使用步骤"></a>CGLIB 动态代理类使用步骤</h3><ol>
+<li><p>定义一个类；</p>
+</li>
+<li><p>自定义 <code>MethodInterceptor</code> 并重写 <code>intercept</code> 方法，<code>intercept</code> 用于拦截增强被代理类的方法，和 JDK 动态代理中的 <code>invoke</code> 方法类似；</p>
+</li>
+<li><p>通过 <code>Enhancer</code> 类的 <code>create()</code>创建代理类；</p>
+</li>
+</ol>
+<p><a href="https://github.com/cglib/cglib">CGLIB</a>属于一个开源项目，如果你要使用它的话，需要手动添加相关依赖。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 实际使用</span></span><br><span class="line">AliSmsService aliSmsService = (AliSmsService) CglibProxyFactory.getProxy(AliSmsService.class);</span><br><span class="line">aliSmsService.send(<span class="string">&quot;java&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//实现一个使用阿里云发送短信的类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AliSmsService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">send</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;send message:&quot;</span> + message);</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 自定义 MethodInterceptor（方法拦截器）</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DebugMethodInterceptor</span> <span class="keyword">implements</span> <span class="title">MethodInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> o           被代理的对象（需要增强的对象）</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> method      被拦截的方法（需要增强的方法）</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args        方法入参</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> methodProxy 用于调用原始方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] args, MethodProxy methodProxy)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="comment">//调用方法之前，我们可以添加自己的操作</span></span><br><span class="line">        System.out.println(<span class="string">&quot;before method &quot;</span> + method.getName());</span><br><span class="line">        Object object = methodProxy.invokeSuper(o, args);</span><br><span class="line">        <span class="comment">//调用方法之后，我们同样可以添加自己的操作</span></span><br><span class="line">        System.out.println(<span class="string">&quot;after method &quot;</span> + method.getName());</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取代理类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CglibProxyFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getProxy</span><span class="params">(Class&lt;?&gt; clazz)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 创建动态代理增强类</span></span><br><span class="line">        Enhancer enhancer = <span class="keyword">new</span> Enhancer();</span><br><span class="line">        <span class="comment">// 设置类加载器</span></span><br><span class="line">        enhancer.setClassLoader(clazz.getClassLoader());</span><br><span class="line">        <span class="comment">// 设置被代理类</span></span><br><span class="line">        enhancer.setSuperclass(clazz);</span><br><span class="line">        <span class="comment">// 设置方法拦截器</span></span><br><span class="line">        enhancer.setCallback(<span class="keyword">new</span> DebugMethodInterceptor());</span><br><span class="line">        <span class="comment">// 创建代理类</span></span><br><span class="line">        <span class="keyword">return</span> enhancer.create();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">before method send</span><br><span class="line">send message:java</span><br><span class="line">after method send</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="JDK-动态代理和-CGLIB-动态代理对比"><a href="#JDK-动态代理和-CGLIB-动态代理对比" class="headerlink" title="JDK 动态代理和 CGLIB 动态代理对比"></a>JDK 动态代理和 CGLIB 动态代理对比</h2><ol>
+<li><strong>JDK 动态代理只能只能代理实现了接口的类或者直接代理接口，而 CGLIB 可以代理未实现任何接口的类。</strong> </li>
+<li>效率来说，大部分情况都是 JDK 动态代理更优秀，随着 JDK 版本的升级，这个优势更加明显。</li>
+</ol>
+<h1 id="静态代理和动态代理的对比"><a href="#静态代理和动态代理的对比" class="headerlink" title="静态代理和动态代理的对比"></a>静态代理和动态代理的对比</h1><ol>
+<li><strong>灵活性</strong> ：动态代理更加灵活，不需要必须实现接口，可以直接代理实现类，并且可以不需要针对每个目标类都创建一个代理类。另外，静态代理中，接口一旦新增加方法，目标对象和代理对象都要进行修改，这是非常麻烦的！</li>
+<li><strong>JVM 层面</strong> ：静态代理在编译时就将接口、实现类、代理类这些都变成了一个个实际的 <strong>class 文件</strong>。而动态代理是在运行时动态生成<strong>类字节码</strong>，并加载到 JVM 中的。</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/archives/0.html</url>
+    <content><![CDATA[<p>浪潮之巅</p>
+<p>Java技术体系</p>
+<ol>
+<li>Java程序设计语言</li>
+<li>JVM</li>
+<li>Java API类库</li>
+<li>辅助工具  如javac</li>
+</ol>
+<p>1+2+3+4=JDK</p>
+<p>2+3=JRE</p>
+<p>Java技术体系</p>
+<p>JavaSE JavaEE JavaME</p>
+<p>JavaEE框架</p>
+<ul>
+<li>Spring大家族</li>
+</ul>
+<p>《数据结构》</p>
+<p>剑指offer <strong>必看</strong></p>
+<p>大话数据结构</p>
+<p>大话数据结构<br>剑指offer<br>编程之美<br>编程珠玑<br>Leetcode </p>
+<p>第一：《C Primer Plus》(第5版）中文版  买新版<br>第二：《C++Primer》中文版<br>第三：《C++ Primer Plus》 比第二更适合零基础<br>第四：《Java编程思想》<br>第五：《Java核心技术》卷1卷2<br>第六：《Python核心编程》<br>第七：《Python编程从入门到实战》<br>第八：《Go语言实战》 or《Go In Action》<br>第九：《算法导论》 不适合初学者<br>第十：《算法》第四版 红色<br>第十一：《TCP/IP详解》<br>第十二：《计算机网络 自顶向下》<br>第十三：《私房菜》  工具书<br>第十四：《Unix环境高级编程》<br>第十五：《Spring实战》<br>第十六：《Spring Boot实战》<br>第十七：《Spring技术内幕》 很难<br>第十八：《MySQL必知必会》   涵盖 《SQL必知必会》的内容<br>第十九：《高性能MySQL》<br>第二十：《重构 改善既有代码的设计》 需要一些经验，拔高内容</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/archives/0.html</url>
+    <content><![CDATA[<h2 id="String类"><a href="#String类" class="headerlink" title="String类"></a>String类</h2><p><img src="https://gitee.com/alexandermucc/img/raw/master/img/1624762507074/image-20210627105506208.png" alt="image-20210627105506208"></p>
+<p>StringBuilder和StringBuffer</p>
+<p>StringBuilder是线程安全</p>
+<h2 id="抽象类和接口的区别"><a href="#抽象类和接口的区别" class="headerlink" title="抽象类和接口的区别"></a><strong>抽象类和接口的区别</strong></h2><ol>
+<li>抽象类中的方法可以有方法体，就是能实现方法的具体功能，但是接口中的方法不行。</li>
+<li>抽象类中的成员变量可以是各种类型的，而接口中的成员变量只能是 <strong>public static final</strong> 类型的。</li>
+<li>接口中不能含有静态代码块以及静态方法(用 static 修饰的方法)，而抽象类是可以有静态代码块和静态方法。</li>
+<li>一个类只能继承一个抽象类，而一个类却可以实现多个接口。</li>
+</ol>
+<h2 id="Java数据结构"><a href="#Java数据结构" class="headerlink" title="Java数据结构"></a>Java数据结构</h2><h3 id="传统遗留"><a href="#传统遗留" class="headerlink" title="传统遗留"></a>传统遗留</h3><ul>
+<li>枚举（Enumeration）</li>
+<li>位集合（BitSet）</li>
+<li>向量（Vector）</li>
+<li>栈（Stack）</li>
+<li>字典（Dictionary）</li>
+<li>哈希表（Hashtable）</li>
+<li>属性（Properties）</li>
+</ul>
+<h4 id="Java-Enumeration接口"><a href="#Java-Enumeration接口" class="headerlink" title="Java Enumeration接口"></a>Java Enumeration接口</h4><blockquote>
+<p>这种传统接口已被迭代器取代。尽管如此，它还是使用在诸如Vector和Properties这些传统类所定义的方法中</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>序号</strong></th>
+<th align="center"><strong>方法描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="center"><strong>boolean hasMoreElements( )</strong>  测试此枚举是否包含更多的元素。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="center"><strong>Object nextElement( )</strong> 如果此枚举对象至少还有一个可提供的元素，则返回此枚举的下一个元素。</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Vector;</span><br><span class="line"><span class="keyword">import</span> java.util.Enumeration;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EnumerationTester</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">      Enumeration&lt;String&gt; days;</span><br><span class="line">      Vector&lt;String&gt; dayNames = <span class="keyword">new</span> Vector&lt;String&gt;();</span><br><span class="line">      dayNames.add(<span class="string">&quot;Sunday&quot;</span>);</span><br><span class="line">      dayNames.add(<span class="string">&quot;Monday&quot;</span>);</span><br><span class="line">      dayNames.add(<span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">      dayNames.add(<span class="string">&quot;Wednesday&quot;</span>);</span><br><span class="line">      dayNames.add(<span class="string">&quot;Thursday&quot;</span>);</span><br><span class="line">      dayNames.add(<span class="string">&quot;Friday&quot;</span>);</span><br><span class="line">      dayNames.add(<span class="string">&quot;Saturday&quot;</span>);</span><br><span class="line">      days = dayNames.elements();</span><br><span class="line">      <span class="keyword">while</span> (days.hasMoreElements())&#123;</span><br><span class="line">         System.out.println(days.nextElement()); </span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Sunday</span><br><span class="line">Monday</span><br><span class="line">Tuesday</span><br><span class="line">Wednesday</span><br><span class="line">Thursday</span><br><span class="line">Friday</span><br><span class="line">Saturday</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Java-Bitset类"><a href="#Java-Bitset类" class="headerlink" title="Java Bitset类"></a>Java Bitset类</h4><blockquote>
+<p>个Bitset类创建一种特殊类型的数组来保存位值。BitSet中数组大小会随需要增加。这和位向量（vector of bits）比较类似。</p>
+<p>这是一个传统的类，但它在Java 2中被完全重新设计。</p>
+</blockquote>
+<p><strong>实例</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.BitSet;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BitSetDemo</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">     BitSet bits1 = <span class="keyword">new</span> BitSet(<span class="number">16</span>);</span><br><span class="line">     BitSet bits2 = <span class="keyword">new</span> BitSet(<span class="number">16</span>);</span><br><span class="line">      </span><br><span class="line">     <span class="comment">// set some bits</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">16</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>((i%<span class="number">2</span>) == <span class="number">0</span>) bits1.set(i);</span><br><span class="line">        <span class="keyword">if</span>((i%<span class="number">5</span>) != <span class="number">0</span>) bits2.set(i);</span><br><span class="line">     &#125;</span><br><span class="line">     System.out.println(<span class="string">&quot;Initial pattern in bits1: &quot;</span>);</span><br><span class="line">     System.out.println(bits1);</span><br><span class="line">     System.out.println(<span class="string">&quot;\nInitial pattern in bits2: &quot;</span>);</span><br><span class="line">     System.out.println(bits2);</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// AND bits</span></span><br><span class="line">     bits2.and(bits1);</span><br><span class="line">     System.out.println(<span class="string">&quot;\nbits2 AND bits1: &quot;</span>);</span><br><span class="line">     System.out.println(bits2);</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// OR bits</span></span><br><span class="line">     bits2.or(bits1);</span><br><span class="line">     System.out.println(<span class="string">&quot;\nbits2 OR bits1: &quot;</span>);</span><br><span class="line">     System.out.println(bits2);</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// XOR bits</span></span><br><span class="line">     bits2.xor(bits1);</span><br><span class="line">     System.out.println(<span class="string">&quot;\nbits2 XOR bits1: &quot;</span>);</span><br><span class="line">     System.out.println(bits2);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Initial pattern in bits1:</span><br><span class="line">&#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>&#125;</span><br><span class="line"></span><br><span class="line">Initial pattern in bits2:</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>&#125;</span><br><span class="line"></span><br><span class="line">bits2 AND bits1:</span><br><span class="line">&#123;<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">12</span>, <span class="number">14</span>&#125;</span><br><span class="line"></span><br><span class="line">bits2 OR bits1:</span><br><span class="line">&#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>&#125;</span><br><span class="line"></span><br><span class="line">bits2 XOR bits1:</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Java-Vector-类"><a href="#Java-Vector-类" class="headerlink" title="Java Vector 类"></a>Java Vector 类</h4><blockquote>
+<p>Vector 类实现了一个<strong>动态数组</strong>。和 ArrayList 很相似，但是两者是不同的：</p>
+<ul>
+<li>Vector 是同步访问的。</li>
+<li>Vector 包含了许多传统的方法，这些方法<strong>不属于集合框架。</strong></li>
+</ul>
+<p>Vector 主要用在事先不知道数组的大小，或者只是需要一个可以改变大小的数组的情况。</p>
+</blockquote>
+<p><strong>实例</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VectorDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">      <span class="comment">// initial size is 3, increment is 2</span></span><br><span class="line">      Vector v = <span class="keyword">new</span> Vector(<span class="number">3</span>, <span class="number">2</span>);</span><br><span class="line">      System.out.println(<span class="string">&quot;Initial size: &quot;</span> + v.size());</span><br><span class="line">      System.out.println(<span class="string">&quot;Initial capacity: &quot;</span> +</span><br><span class="line">      v.capacity());</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">1</span>));</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">2</span>));</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">3</span>));</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">4</span>));</span><br><span class="line">      System.out.println(<span class="string">&quot;Capacity after four additions: &quot;</span> +</span><br><span class="line">          v.capacity());</span><br><span class="line"></span><br><span class="line">      v.addElement(<span class="keyword">new</span> Double(<span class="number">5.45</span>));</span><br><span class="line">      System.out.println(<span class="string">&quot;Current capacity: &quot;</span> +</span><br><span class="line">      v.capacity());</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Double(<span class="number">6.08</span>));</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">7</span>));</span><br><span class="line">      System.out.println(<span class="string">&quot;Current capacity: &quot;</span> +</span><br><span class="line">      v.capacity());</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Float(<span class="number">9.4</span>));</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">10</span>));</span><br><span class="line">      System.out.println(<span class="string">&quot;Current capacity: &quot;</span> +</span><br><span class="line">      v.capacity());</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">11</span>));</span><br><span class="line">      v.addElement(<span class="keyword">new</span> Integer(<span class="number">12</span>));</span><br><span class="line">      System.out.println(<span class="string">&quot;First element: &quot;</span> +</span><br><span class="line">         (Integer)v.firstElement());</span><br><span class="line">      System.out.println(<span class="string">&quot;Last element: &quot;</span> +</span><br><span class="line">         (Integer)v.lastElement());</span><br><span class="line">      <span class="keyword">if</span>(v.contains(<span class="keyword">new</span> Integer(<span class="number">3</span>)))</span><br><span class="line">         System.out.println(<span class="string">&quot;Vector contains 3.&quot;</span>);</span><br><span class="line">      <span class="comment">// enumerate the elements in the vector.</span></span><br><span class="line">      Enumeration vEnum = v.elements();</span><br><span class="line">      System.out.println(<span class="string">&quot;\nElements in vector:&quot;</span>);</span><br><span class="line">      <span class="keyword">while</span>(vEnum.hasMoreElements())</span><br><span class="line">         System.out.print(vEnum.nextElement() + <span class="string">&quot; &quot;</span>);</span><br><span class="line">      System.out.println();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>以上实例编译运行结果如下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Initial size: 0</span><br><span class="line">Initial capacity: 3</span><br><span class="line">Capacity after four additions: 5</span><br><span class="line">Current capacity: 5</span><br><span class="line">Current capacity: 7</span><br><span class="line">Current capacity: 9</span><br><span class="line">First element: 1</span><br><span class="line">Last element: 12</span><br><span class="line">Vector contains 3.</span><br><span class="line"></span><br><span class="line">Elements in vector:</span><br><span class="line">1 2 3 4 5.45 6.08 7 9.4 10 11 12</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Java-Stack-类"><a href="#Java-Stack-类" class="headerlink" title="Java Stack 类"></a>Java Stack 类</h4><blockquote>
+<p>栈是Vector的一个子类，它实现了一个标准的后进先出的栈</p>
+</blockquote>
+<p>实例</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackDemo</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showpush</span><span class="params">(Stack&lt;Integer&gt; st, <span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">        st.push(<span class="keyword">new</span> Integer(a));</span><br><span class="line">        System.out.println(<span class="string">&quot;push(&quot;</span> + a + <span class="string">&quot;)&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;stack: &quot;</span> + st);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showpop</span><span class="params">(Stack&lt;Integer&gt; st)</span> </span>&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;pop -&gt; &quot;</span>);</span><br><span class="line">        Integer a = (Integer) st.pop();</span><br><span class="line">        System.out.println(a);</span><br><span class="line">        System.out.println(<span class="string">&quot;stack: &quot;</span> + st);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        Stack&lt;Integer&gt; st = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        System.out.println(<span class="string">&quot;stack: &quot;</span> + st);</span><br><span class="line">        showpush(st, <span class="number">42</span>);</span><br><span class="line">        showpush(st, <span class="number">66</span>);</span><br><span class="line">        showpush(st, <span class="number">99</span>);</span><br><span class="line">        showpop(st);</span><br><span class="line">        showpop(st);</span><br><span class="line">        showpop(st);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            showpop(st);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (EmptyStackException e) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;empty stack&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">stack: [ ]</span><br><span class="line">push(42)</span><br><span class="line">stack: [42]</span><br><span class="line">push(66)</span><br><span class="line">stack: [42, 66]</span><br><span class="line">push(99)</span><br><span class="line">stack: [42, 66, 99]</span><br><span class="line">pop -&gt; 99</span><br><span class="line">stack: [42, 66]</span><br><span class="line">pop -&gt; 66</span><br><span class="line">stack: [42]</span><br><span class="line">pop -&gt; 42</span><br><span class="line">stack: [ ]</span><br><span class="line">pop -&gt; empty stack</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Java-Dictionary-类"><a href="#Java-Dictionary-类" class="headerlink" title="Java Dictionary 类"></a>Java Dictionary 类</h4><blockquote>
+<p>Dictionary 类是一个<strong>抽象类</strong>，用来<strong>存储键/值对</strong>，作用和Map类相似。</p>
+<p>给出键和值，你就可以将值存储在Dictionary对象中。一旦该值被存储，就可以通过它的键来获取它。所以和Map一样， Dictionary 也可以作为一个键/值对列表。</p>
+<p><strong>Dictionary类已经过时了</strong></p>
+</blockquote>
+<h4 id="Java-Hashtable-类"><a href="#Java-Hashtable-类" class="headerlink" title="Java Hashtable 类"></a>Java Hashtable 类</h4><blockquote>
+<p>是一个Dictionary具体的实现 。它和HashMap类很相似，但是它<strong>支持同步。</strong></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashTableDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">      <span class="comment">// Create a hash map</span></span><br><span class="line">      Hashtable balance = <span class="keyword">new</span> Hashtable();</span><br><span class="line">      Enumeration names;</span><br><span class="line">      String str;</span><br><span class="line">      <span class="keyword">double</span> bal;</span><br><span class="line"></span><br><span class="line">      balance.put(<span class="string">&quot;Zara&quot;</span>, <span class="keyword">new</span> Double(<span class="number">3434.34</span>));</span><br><span class="line">      balance.put(<span class="string">&quot;Mahnaz&quot;</span>, <span class="keyword">new</span> Double(<span class="number">123.22</span>));</span><br><span class="line">      balance.put(<span class="string">&quot;Ayan&quot;</span>, <span class="keyword">new</span> Double(<span class="number">1378.00</span>));</span><br><span class="line">      balance.put(<span class="string">&quot;Daisy&quot;</span>, <span class="keyword">new</span> Double(<span class="number">99.22</span>));</span><br><span class="line">      balance.put(<span class="string">&quot;Qadir&quot;</span>, <span class="keyword">new</span> Double(-<span class="number">19.08</span>));</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Show all balances in hash table.</span></span><br><span class="line">      names = balance.keys();</span><br><span class="line">      <span class="keyword">while</span>(names.hasMoreElements()) &#123;</span><br><span class="line">         str = (String) names.nextElement();</span><br><span class="line">         System.out.println(str + <span class="string">&quot;: &quot;</span> +</span><br><span class="line">         balance.get(str));</span><br><span class="line">      &#125;</span><br><span class="line">      System.out.println();</span><br><span class="line">      <span class="comment">// Deposit 1,000 into Zara&#x27;s account</span></span><br><span class="line">      bal = ((Double)balance.get(<span class="string">&quot;Zara&quot;</span>)).doubleValue();</span><br><span class="line">      balance.put(<span class="string">&quot;Zara&quot;</span>, <span class="keyword">new</span> Double(bal+<span class="number">1000</span>));</span><br><span class="line">      System.out.println(<span class="string">&quot;Zara&#x27;s new balance: &quot;</span> +</span><br><span class="line">      balance.get(<span class="string">&quot;Zara&quot;</span>));</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Qadir: -19.08</span><br><span class="line">Zara: 3434.34</span><br><span class="line">Mahnaz: 123.22</span><br><span class="line">Daisy: 99.22</span><br><span class="line">Ayan: 1378.0</span><br><span class="line"></span><br><span class="line">Zara&#x27;s new balance: 4434.34</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Java-Properties-类"><a href="#Java-Properties-类" class="headerlink" title="Java Properties 类"></a>Java Properties 类</h4><blockquote>
+<p>Properties 继承于 Hashtable。表示一个<strong>持久的属性集</strong>.属性列表中每个键及其对应值都是一个字符串。</p>
+<p>Properties 类被许多 Java 类使用</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PropDemo</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">      Properties capitals = <span class="keyword">new</span> Properties();</span><br><span class="line">      Set states;</span><br><span class="line">      String str;</span><br><span class="line">      </span><br><span class="line">      capitals.put(<span class="string">&quot;Illinois&quot;</span>, <span class="string">&quot;Springfield&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;Missouri&quot;</span>, <span class="string">&quot;Jefferson City&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;Washington&quot;</span>, <span class="string">&quot;Olympia&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;California&quot;</span>, <span class="string">&quot;Sacramento&quot;</span>);</span><br><span class="line">      capitals.put(<span class="string">&quot;Indiana&quot;</span>, <span class="string">&quot;Indianapolis&quot;</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// Show all states and capitals in hashtable.</span></span><br><span class="line">      states = capitals.keySet(); <span class="comment">// get set-view of keys</span></span><br><span class="line">      Iterator itr = states.iterator();</span><br><span class="line">      <span class="keyword">while</span>(itr.hasNext()) &#123;</span><br><span class="line">         str = (String) itr.next();</span><br><span class="line">         System.out.println(<span class="string">&quot;The capital of &quot;</span> +</span><br><span class="line">            str + <span class="string">&quot; is &quot;</span> + capitals.getProperty(str) + <span class="string">&quot;.&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      System.out.println();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">// look for state not in list -- specify default</span></span><br><span class="line">      str = capitals.getProperty(<span class="string">&quot;Florida&quot;</span>, <span class="string">&quot;Not Found&quot;</span>);</span><br><span class="line">      System.out.println(<span class="string">&quot;The capital of Florida is &quot;</span></span><br><span class="line">          + str + <span class="string">&quot;.&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实例编译运行结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The capital of Missouri is Jefferson City.</span><br><span class="line">The capital of Illinois is Springfield.</span><br><span class="line">The capital of Indiana is Indianapolis.</span><br><span class="line">The capital of California is Sacramento.</span><br><span class="line">The capital of Washington is Olympia.</span><br><span class="line"></span><br><span class="line">The capital of Florida is Not Found.</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Java2引入Collection"><a href="#Java2引入Collection" class="headerlink" title="Java2引入Collection"></a>Java2引入Collection</h3>]]></content>
+  </entry>
+  <entry>
+    <title>Java基础之前端学习</title>
+    <url>/archives/6c84e79c.html</url>
+    <content><![CDATA[<h1 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h1><p>超文本标记语言（英语：HyperText Markup Language，简称：HTML）是一种用于创建网页的标准标记语言。<strong>用来描述网页的一种语言</strong></p>
+<ul>
+<li>HTML 指的是超文本标记语言: <strong>H</strong>yper<strong>T</strong>ext <strong>M</strong>arkup <strong>L</strong>anguage</li>
+<li>HTML 不是一种编程语言，而是一种<strong>标记</strong>语言</li>
+<li>标记语言是一套<strong>标记标签</strong> (markup tag)</li>
+<li>HTML 使用标记标签来<strong>描述</strong>网页</li>
+<li>HTML 文档包含了HTML <strong>标签</strong>及<strong>文本</strong>内容</li>
+<li>HTML文档也叫做 <strong>web 页面</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">标签</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><a href="https://www.runoob.com/tags/tag-html.html"><html></a></td>
+<td align="center">定义 HTML 文档</td>
+</tr>
+<tr>
+<td align="center"><a href="https://www.runoob.com/tags/tag-body.html"><body></a></td>
+<td align="center">定义文档的主体</td>
+</tr>
+<tr>
+<td align="center"><a href="https://www.runoob.com/tags/tag-hn.html"><h1>-<h6></a></td>
+<td align="center">定义 HTML 标题</td>
+</tr>
+<tr>
+<td align="center"><a href="https://www.runoob.com/tags/tag-hr.html"><hr></a></td>
+<td align="center">定义水平线</td>
+</tr>
+<tr>
+<td align="center"><a href="https://www.runoob.com/tags/tag-comment.html"><!----></a></td>
+<td align="center">定义注释</td>
+</tr>
+<tr>
+<td align="center"><a href="https://www.runoob.com/tags/tag-p.html"><p></a></td>
+<td align="center">定义一个段落</td>
+</tr>
+<tr>
+<td align="center"><a href="https://www.runoob.com/tags/tag-br.html"><br></a></td>
+<td align="center">插入单个折行（换行）</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/archives/0.html</url>
+    <content><![CDATA[<h1 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符"></a>修饰符</h1><h1 id="abstract关键字"><a href="#abstract关键字" class="headerlink" title="abstract关键字"></a>abstract关键字</h1><p><strong>抽象类</strong></p>
+<blockquote>
+<p>该关键字声明的类是抽象类</p>
+<p><strong>目的</strong>是为了将来对该类进行扩充</p>
+<p><strong>有抽象方法的类一定是抽象类，抽象类不一定有抽象方法</strong></p>
+</blockquote>
+<p><strong>抽象方法</strong></p>
+<ul>
+<li>抽象方法是一种没有任何实现的方法，该方法的的具体实现由子类提供。</li>
+<li>抽象方法不能被声明成 final 和 static。</li>
+<li>任何继承抽象类的子类必须实现父类的所有抽象方法，除非该子类也是抽象类。</li>
+<li>如果一个类包含若干个抽象方法，那么该类必须声明为抽象类。抽象类可以不包含抽象方法。</li>
+</ul>
+<h1 id="synchronized-修饰符"><a href="#synchronized-修饰符" class="headerlink" title="synchronized 修饰符"></a>synchronized 修饰符</h1><p>synchronized 关键字声明的方法同一时间只能被一个线程访问。synchronized 修饰符可以应用于四个访问修饰符。</p>
+<h1 id="transient-修饰符"><a href="#transient-修饰符" class="headerlink" title="transient 修饰符"></a>transient 修饰符</h1><p><strong>序列化的对象</strong>包含被 transient 修饰的实例变量时，java 虚拟机(JVM)<strong>跳过该特定的变量</strong>。</p>
+<p>该修饰符包含在定义变量的语句中，用来<strong>预处理类和变量的数据类型</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">transient</span> <span class="keyword">int</span> limit = <span class="number">55</span>;   <span class="comment">// 不会持久化</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> b; <span class="comment">// 持久化</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="volatile-修饰符"><a href="#volatile-修饰符" class="headerlink" title="volatile 修饰符"></a>volatile 修饰符</h1><p>volatile 修饰的成员变量在<strong>每次被线程访问</strong>时，都强制从共享内存中<strong>重新读取该成员变量的值</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> active;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        active = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">while</span> (active) <span class="comment">// 第一行</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 代码</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        active = <span class="keyword">false</span>; <span class="comment">// 第二行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上代码中我们使用了 volatile 修饰 active，在一个线程调用 run() 方法（在 Runnable 开启的线程），在另一个线程调用 stop() 方法。 每次调用时会发生变化，该循环会停止。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Java基础知识-面试知识</title>
+    <url>/archives/c112d770.html</url>
+    <content><![CDATA[<p>文章该内容是关于面试中的知识点的复习</p>
+<span id="more"></span>
+
+
+
+<h1 id="二、Java"><a href="#二、Java" class="headerlink" title="二、Java"></a>二、Java</h1><h2 id="2-1-Java基础"><a href="#2-1-Java基础" class="headerlink" title="2.1 Java基础"></a>2.1 Java基础</h2><h3 id="2-1-1-⾯向对象和⾯向过程的区别"><a href="#2-1-1-⾯向对象和⾯向过程的区别" class="headerlink" title="2.1.1. ⾯向对象和⾯向过程的区别"></a>2.1.1. ⾯向对象和⾯向过程的区别</h3><table>
+<thead>
+<tr>
+<th>名称\特点</th>
+<th>性能</th>
+<th align="center">易维护、易复用、易扩展</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>面向过程</td>
+<td>高</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td>面向对象</td>
+<td>低</td>
+<td align="center">Yes</td>
+</tr>
+</tbody></table>
+<p><strong>性能原因</strong>：</p>
+<ul>
+<li>最主要是因为面向对象是半编译半解释型语言，先把源代码编译成字节码，再通过JVM解释执行字节码转换为机器码。</li>
+<li>面向过程只需要将源代码</li>
+</ul>
+<p><strong>易维护、易复用、易扩展</strong>：</p>
+<p>由于面向对象具有封装、继承、多态性的特性，因此可以设计出低耦合的系统，使系统更加灵活、更加易于维护。</p>
+<h3 id="2-1-2-Java-语言有哪些特点"><a href="#2-1-2-Java-语言有哪些特点" class="headerlink" title="2.1.2. Java 语言有哪些特点?"></a>2.1.2. Java 语言有哪些特点?</h3><ol start="2">
+<li>面向对象（封装，继承，多态）；</li>
+<li>平台无关性（ Java 虚拟机实现平台无关性）；</li>
+<li>可靠性、安全性；</li>
+<li><strong>⽀持多线程</strong>；</li>
+<li>支持<strong>网络编程</strong></li>
+<li><strong>编译与解释并存</strong>；</li>
+</ol>
+<h3 id="2-1-3-JVM-JDK-和-JRE"><a href="#2-1-3-JVM-JDK-和-JRE" class="headerlink" title="2.1.3 JVM JDK 和 JRE"></a>2.1.3 JVM JDK 和 JRE</h3><h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><h1 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h1><h2 id="OSI、TCP-IP、五层协议体系结构"><a href="#OSI、TCP-IP、五层协议体系结构" class="headerlink" title="OSI、TCP/IP、五层协议体系结构"></a>OSI、TCP/IP、五层协议体系结构</h2><p><img src="https://gitee.com/alexandermucc/img/raw/master/img/1624591130331/image-20210625111848432.png" alt="image-20210625111848432"></p>
+<p><strong>OSI</strong>  </p>
+<blockquote>
+<ul>
+<li>7层（应用层、表示层、会话层、运输层、网络层、传输层、数据链路层、物理层、）</li>
+<li>一种<strong>概念模型</strong>，由<a href="https://baike.baidu.com/item/%E5%9B%BD%E9%99%85%E6%A0%87%E5%87%86%E5%8C%96%E7%BB%84%E7%BB%87/779832">国际标准化组织</a>提出，一个试图使各种计算机在世界范围内互连为网络的<strong>标准框架</strong></li>
+<li>基本的功能：提供给开发者一个必须的、通用的概念以便开发完善、可以用来解释<strong>连接不同系统的框架</strong></li>
+</ul>
+</blockquote>
+<p><strong>TCP/IP</strong></p>
+<blockquote>
+<p>4层：应用层、运输层、网际层、网络连接层</p>
+</blockquote>
+<p><strong>五层协议体系结构</strong></p>
+<blockquote>
+<ul>
+<li>综合OSI和TCP/IP的优点，采取一种只有五层协议的体系结构，这样既简洁又能将概念阐述清楚</li>
+<li><strong>五层协议体系结构</strong>:为了介绍网络原理而设计的,实际应用还是采用TCP/IP四层体系结构</li>
+</ul>
+</blockquote>
+<p><strong>⽆论是哪⼀层的数据单元，都可笼统地⽤“分组”来表示</strong></p>
+<p><img src="https://gitee.com/alexandermucc/img/raw/master/img/1624593895208/2021010409370574.gif" alt="img"></p>
+<hr>
+<p><strong>应用层</strong></p>
+<ul>
+<li><p>通过应⽤进程间的交互来<strong>完成特定⽹络应⽤</strong></p>
+</li>
+<li><p>应⽤进程（进程：主机中正在运⾏的程序）间的<strong>通信和交互的规则</strong></p>
+</li>
+<li><p>**报⽂:**应⽤层交互的数据单元</p>
+</li>
+</ul>
+<p><strong>应用层协议</strong></p>
+<p>域名系统DNS</p>
+<blockquote>
+<p>域名和IP地址相互映射的⼀个<strong>分布式数据库</strong></p>
+</blockquote>
+<p>HTTP协议</p>
+<blockquote>
+<ul>
+<li>所有的 WWW（万维⽹） ⽂件都必须遵守这个标准</li>
+<li>提供⼀种发布和接收 HTML ⻚⾯的⽅法</li>
+</ul>
+</blockquote>
+<p>SMTP协议</p>
+<blockquote>
+<p>邮件分发协议</p>
+</blockquote>
+<hr>
+<p><strong>传输层</strong></p>
+<blockquote>
+<ul>
+<li>两台主机进程之间的通信提供<strong>通⽤的数据传输服务</strong></li>
+<li><strong>“通⽤的”</strong>是指并不针对某⼀个特定的⽹络应⽤，⽽是多种应⽤可以使⽤同⼀个运输层服务</li>
+<li><strong>复⽤</strong>就是指多个应⽤层进程可同时使⽤下⾯运输层的服务<br><strong>分发</strong>是运输层把收到的信息分别交付上⾯应⽤层中的相应进程</li>
+</ul>
+</blockquote>
+<p><strong>传输层协议</strong></p>
+<p>传输控制协议 TCP</p>
+<blockquote>
+<p>提供<strong>⾯向连接</strong>的，<strong>可靠</strong>的数据传输服务</p>
+</blockquote>
+<p>⽤户数据协议 UDP</p>
+<blockquote>
+<p>提供<strong>⽆连接的</strong>，尽最⼤努⼒的数据传输服务（<strong>不保证数据传输的可靠性</strong>）</p>
+</blockquote>
+<hr>
+<p><strong>网络层</strong></p>
+<blockquote>
+<ul>
+<li><strong>选择合适的⽹间路由和交换结点， 确保数据及时传送</strong>。⽹络层把运输层产⽣的<u>报⽂段</u>或⽤户数据报封装成<u>分组和包</u>进⾏传送。</li>
+<li>由于⽹络层使⽤ <strong>IP 协议</strong>，因此分组也叫 <strong>IP 数据报</strong> ，简称 <strong>数据报</strong>。</li>
+<li>互联⽹是由⼤量的<strong>异构（heterogeneous）⽹络</strong>通过路由器（router）相互连接起来的。互联⽹使⽤的⽹络层协议是⽆连接的⽹际协议（Intert Protocol）和许多路由选择协议，因此互联⽹的⽹络层也叫做<strong>⽹际层或IP层</strong></li>
+<li>异构：<u>两个或以上</u>的无线通信系统采用了不同的<strong>接入技术</strong>，或者是采用相同的无线接入技术但属于<strong>不同的无线运营商</strong></li>
+</ul>
+</blockquote>
+<hr>
+<p><strong>数据链路层</strong></p>
+<blockquote>
+<ul>
+<li>也叫链路层。两台主机之间的数据传输，总是在⼀段⼀段的链路上传送的，这就需要使⽤专⻔的链路层的协议</li>
+<li>数据链路层<strong>将⽹络层交下来的 IP 数据报组装成帧</strong></li>
+<li><strong>每⼀帧</strong>包括<u>数据和必要的控制信息</u>（如同步信息，地址信息，差错控制等）<ul>
+<li>控制信息使接收端知道每帧的比特长度</li>
+<li>控制信息检测帧的错误</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<p><strong>物理层</strong></p>
+<blockquote>
+<ul>
+<li>物理层上所传送的数据单位是<strong>⽐特</strong></li>
+<li>实现相邻计算机节点之间⽐特流的<strong>透明传送</strong>，尽可能<strong>屏蔽掉具体传输介质和物理设备的差异</strong></li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1>]]></content>
+      <categories>
+        <category>java基础知识</category>
+      </categories>
+      <tags>
+        <tag>java学习</tag>
+        <tag>java基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vue错误</title>
     <url>/archives/450ca8b4.html</url>
     <content><![CDATA[<h2 id="vue错误"><a href="#vue错误" class="headerlink" title="vue错误"></a>vue错误</h2><p>本文旨在学习vue框架时，所遇到的坑。</p>
@@ -593,7 +1124,7 @@
 </li>
 <li><p>置顶的显示问题</p>
 </li>
-<li><p>图床问题</p>
+<li><p><del>图床问题</del></p>
 </li>
 </ol>
   <span id="more"></span>
